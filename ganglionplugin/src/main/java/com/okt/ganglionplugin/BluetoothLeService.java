@@ -15,11 +15,13 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-
+import com.unity3d.player.UnityPlayer;
+import static com.unity3d.player.UnityPlayer.UnitySendMessage;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
 public class BluetoothLeService extends Service {
     private final static String TAG = "Ganglion"+BluetoothLeService.class.getSimpleName();
 
@@ -348,6 +350,9 @@ public class BluetoothLeService extends Service {
             for(int j = 0; j < 4;j++)
                 Log.i(TAG,"data" + i + " " + j + " " + Double.valueOf(scale_fac_uVolts_per_count * receivedDeltas[i][j]));
         }
+
+        // UnitySendMessage parameter only accept string or a number
+        UnitySendMessage("Canvas", "receiveData", Double.valueOf(scale_fac_uVolts_per_count * receivedDeltas[0][0])+"");
 
         return receivedDeltas;
     }

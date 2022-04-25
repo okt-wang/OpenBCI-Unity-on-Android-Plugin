@@ -26,6 +26,7 @@ import android.util.Log;
 import android.widget.Toast;
 import android.bluetooth.BluetoothAdapter;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -213,11 +214,13 @@ public class PluginInstance {
                     int[] samples=intent.getIntArrayExtra(BluetoothLeService.SAMPLE_ID);
                     int[] intentData1=intent.getIntArrayExtra(BluetoothLeService.FULL_DATA_1);
                     int[] intentData2=intent.getIntArrayExtra(BluetoothLeService.FULL_DATA_2);
-                    Log.i(TAG, samples[0] + "," + intentData1[0] + "," + intentData1[1] + "," + intentData1[2] + "," + intentData1[3] +"\n"  +
-                            samples[1] + "," + intentData2[0] + "," + intentData2[1] + "," + intentData2[2] + "," + intentData2[3]);
+
+//                    Log.i(TAG, samples[0] + "," + intentData1[0] + "," + intentData1[1] + "," + intentData1[2] + "," + intentData1[3] +"\n"  +
+//                            samples[1] + "," + intentData2[0] + "," + intentData2[1] + "," + intentData2[2] + "," + intentData2[3]);
 //                    writetoCSV( path, fileName,
 //                            samples[0] + "," + intentData1[0] + "," + intentData1[1] + "," + intentData1[2] + "," + intentData1[3] +"\n" +
 //                                    samples[1] + "," + intentData2[0] + "," + intentData2[1] + "," + intentData2[2] + "," + intentData2[3] +"\n");
+
                 } else{
                     //handle this
                 }
