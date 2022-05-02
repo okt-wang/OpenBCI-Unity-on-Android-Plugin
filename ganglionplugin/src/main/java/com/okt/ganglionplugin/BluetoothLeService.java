@@ -15,11 +15,15 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+
+import com.google.gson.Gson;
 import com.unity3d.player.UnityPlayer;
 import static com.unity3d.player.UnityPlayer.UnitySendMessage;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class BluetoothLeService extends Service {
@@ -248,14 +252,27 @@ public class BluetoothLeService extends Service {
             updatePacketsCount(packetID);
 
         }
+        double[][] scaleStore = new double[2][4];
+
         for(int i = 0; i < 2;i++){
-            for(int j = 0; j < 4;j++)
-                Log.i(TAG,"data" + i + " " + j + " " + Double.valueOf(scale_fac_uVolts_per_count * fullData[i][j]));
+            for(int j = 0; j < 4;j++) {
+                Log.i(TAG, "data" + i + " " + j + " " + Double.valueOf(scale_fac_uVolts_per_count * fullData[i][j]));
+                scaleStore[i][j] = scale_fac_uVolts_per_count * fullData[i][j];
+            }
         }
+
+        Map<String, double[]> map = new HashMap();
+        map.put("ch1", new double[]{ scaleStore[0][0], scaleStore[1][0]});
+        map.put("ch2", new double[]{ scaleStore[0][1], scaleStore[1][1]});
+        map.put("ch3", new double[]{ scaleStore[0][2], scaleStore[1][2]});
+        map.put("ch4", new double[]{ scaleStore[0][3], scaleStore[1][3]});
+
+        Gson gson = new Gson();
+        String strData = gson.toJson(map);
 
         // UnitySendMessage parameter only accept string or a number
         // TODO: convert to json string, then send to Unity
-        UnitySendMessage("Canvas", "receiveData", Double.valueOf(scale_fac_uVolts_per_count * fullData[0][0])+"");
+        UnitySendMessage("Canvas", "receiveData", strData);
 
         //Log.d(TAG,"data" + fullData);
     }
