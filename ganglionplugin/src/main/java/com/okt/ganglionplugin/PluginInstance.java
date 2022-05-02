@@ -69,7 +69,7 @@ public class PluginInstance {
         mBluetoothLeService.writeCharacteristic((mGanglionSend));
         mCommandIdx = (mCommandIdx +1)% mCommands.length; //update for next run to toggle off
     }
-    public void Toast(String msg) {
+    public void Init() {
         unityActivity.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 0);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();

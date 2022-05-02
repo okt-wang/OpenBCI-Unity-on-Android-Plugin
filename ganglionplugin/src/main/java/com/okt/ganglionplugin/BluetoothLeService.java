@@ -131,15 +131,15 @@ public class BluetoothLeService extends Service {
         final Intent intent = new Intent(action);
         if (UUID_GANGLION_RECEIVE.equals(characteristic.getUuid())) {
             final byte[] data = characteristic.getValue();
-            Log.i(TAG,String.valueOf(data[0]));
+            // Log.i(TAG,String.valueOf(data[0]));
             // Log.d(TAG,"First Byte" + data[0]);
             if (data != null && data.length > 0) {
                 parseData(data);
                 // Log.d(TAG,"packetID" + packetID);
                 if (packetID == 0) {
-                    intent.putExtra(DATA_TYPE, "RAW");
-                    intent.putExtra(FULL_DATA_1, fullData[0]);
-                    intent.putExtra(SAMPLE_ID, sample_id);
+                    //intent.putExtra(DATA_TYPE, "RAW");
+                    //intent.putExtra(FULL_DATA_1, fullData[0]);
+                    //intent.putExtra(SAMPLE_ID, sample_id);
                     // Log.d(TAG,"SampleID" + sample_id[0]);
                 } else if (packetID >=101 && packetID <= 200){
                     intent.putExtra(DATA_TYPE, "19BIT");
@@ -248,6 +248,15 @@ public class BluetoothLeService extends Service {
             updatePacketsCount(packetID);
 
         }
+        for(int i = 0; i < 2;i++){
+            for(int j = 0; j < 4;j++)
+                Log.i(TAG,"data" + i + " " + j + " " + Double.valueOf(scale_fac_uVolts_per_count * fullData[i][j]));
+        }
+
+        // UnitySendMessage parameter only accept string or a number
+        // TODO: convert to json string, then send to Unity
+        UnitySendMessage("Canvas", "receiveData", Double.valueOf(scale_fac_uVolts_per_count * fullData[0][0])+"");
+
         //Log.d(TAG,"data" + fullData);
     }
 
@@ -345,14 +354,6 @@ public class BluetoothLeService extends Service {
                 (payload[17] & 0xFF),
                 (payload[18] & 0xFF)};
         receivedDeltas[1][3] = conv19bitToInt32(miniBuf);
-
-        for(int i = 0; i < 2;i++){
-            for(int j = 0; j < 4;j++)
-                Log.i(TAG,"data" + i + " " + j + " " + Double.valueOf(scale_fac_uVolts_per_count * receivedDeltas[i][j]));
-        }
-
-        // UnitySendMessage parameter only accept string or a number
-        UnitySendMessage("Canvas", "receiveData", Double.valueOf(scale_fac_uVolts_per_count * receivedDeltas[0][0])+"");
 
         return receivedDeltas;
     }
