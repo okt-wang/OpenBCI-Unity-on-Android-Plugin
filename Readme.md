@@ -2,7 +2,7 @@
 
 ## Getting Stared
 In `Unity` call
-```
+```csharp
 using Newtonsoft.Json;
 
     private AndroidJavaClass unityClass;
