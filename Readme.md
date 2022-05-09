@@ -3,6 +3,8 @@
 ## Getting Stared
 In `Unity` call
 ```
+using Newtonsoft.Json;
+
     private AndroidJavaClass unityClass;
     private AndroidJavaObject unityActivity;
     private AndroidJavaObject _pluginInstance;
@@ -34,6 +36,14 @@ In `Unity` call
         {
             _pluginInstance.Call("StreamData");
         }
+    }
+    
+    public void receiveData(string num)
+    {
+        Debug.Log("receiveData: " + num);
+        
+        // Convert to Dictionary
+        var values = JsonConvert.DeserializeObject<Dictionary<string, Double>>(num);
     }
 ```
 ### Build From Source

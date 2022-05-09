@@ -261,20 +261,24 @@ public class BluetoothLeService extends Service {
             }
         }
 
-        Map<String, double[]> map = new HashMap();
-        map.put("ch1", new double[]{ scaleStore[0][0], scaleStore[1][0]});
-        map.put("ch2", new double[]{ scaleStore[0][1], scaleStore[1][1]});
-        map.put("ch3", new double[]{ scaleStore[0][2], scaleStore[1][2]});
-        map.put("ch4", new double[]{ scaleStore[0][3], scaleStore[1][3]});
+        Map<String, Double> map = new HashMap();
+        map.put("ch1_1", scaleStore[0][0]);
+        map.put("ch1_2", scaleStore[1][0]);
+
+        map.put("ch2_1", scaleStore[0][1]);
+        map.put("ch2_2", scaleStore[1][1]);
+
+        map.put("ch3_1", scaleStore[0][2]);
+        map.put("ch3_2", scaleStore[1][2]);
+
+        map.put("ch4_1", scaleStore[0][3]);
+        map.put("ch4_2", scaleStore[1][3]);
 
         Gson gson = new Gson();
         String strData = gson.toJson(map);
 
         // UnitySendMessage parameter only accept string or a number
-        // TODO: convert to json string, then send to Unity
         UnitySendMessage("Canvas", "receiveData", strData);
-
-        //Log.d(TAG,"data" + fullData);
     }
 
     private static void updatePacketsCount(int packetID){
