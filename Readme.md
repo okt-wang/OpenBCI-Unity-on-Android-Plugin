@@ -10,6 +10,11 @@ using Newtonsoft.Json;
     private AndroidJavaObject _pluginInstance;
     
     
+    void Start()
+    {
+        IntializePlugin("com.okt.ganglionplugin.PluginInstance");
+    }
+    
     public void IntializePlugin(string pluginName)
     {
         unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
