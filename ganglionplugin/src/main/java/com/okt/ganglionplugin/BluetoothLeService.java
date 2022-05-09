@@ -274,7 +274,7 @@ public class BluetoothLeService extends Service {
         map.put("ch4_1", scaleStore[0][3]);
         map.put("ch4_2", scaleStore[1][3]);
 
-        Gson gson = new Gson();
+        Gson gson = new Gson(); // Need to put Gson jar file in Unity 'Assests/Plugins/Android'
         String strData = gson.toJson(map);
 
         // UnitySendMessage parameter only accept string or a number
