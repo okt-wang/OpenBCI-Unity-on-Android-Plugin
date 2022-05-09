@@ -1,5 +1,5 @@
 # OpenBCI-Unity-on-Android-Plugin
-
+Read OpenBCI data from Unity
 ## Getting Stared
 In `Unity` call
 ```csharp
