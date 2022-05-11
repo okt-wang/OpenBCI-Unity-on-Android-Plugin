@@ -12,6 +12,7 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -20,6 +21,8 @@ import com.google.gson.Gson;
 import com.unity3d.player.UnityPlayer;
 import static com.unity3d.player.UnityPlayer.UnitySendMessage;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +73,7 @@ public class BluetoothLeService extends Service {
     private static int[] sample_id={0, 0};
     private static int[][] fullData = {{0, 0, 0, 0},{0, 0, 0, 0}};
     private static int packetID;
-    private static double scale_fac_uVolts_per_count = 1200 / (8388607.0 * 1.5 * 51.0);
+    private static double scale_fac_uVolts_per_count = 1200 / (8388607.0 * 1.5 * 51.0); // https://github.com/openbci-archive/OpenBCI_Python/blob/master/openbci/ganglion.py
 
 
     // Implements callback methods for GATT events that the app cares about.  For example,
@@ -171,7 +174,8 @@ public class BluetoothLeService extends Service {
         } else {
             packetID = data[0];
         }
-        Log.wtf(TAG," PacketID " + data[0]);
+
+        // Log.i(TAG," PacketID " + packetID);
         //Copy the data without the packetID to payload
         byte[] payload= Arrays.copyOfRange(data, 1, data.length);
         //Boolean receiving_ASCII;
@@ -191,8 +195,7 @@ public class BluetoothLeService extends Service {
             //Impedance Channel
         } else if (packetID >= 201 && packetID <= 205){
             // receiving_ASCII = false;
-            //TODO parseImpedance(packetID, packet[1:])
-            //Part of ASCII -- TODO: better formatting of incoming ASCII
+            parseImpedance(packetID, payload);
         } else if( packetID == 206){
             //print("%\t" + str(packet[1:]))
             //receiving_ASCII = true;
@@ -207,6 +210,23 @@ public class BluetoothLeService extends Service {
             return false;
         }
         return true;
+    }
+    private static void parseImpedance(int packetID, byte[] data)
+    {
+        // packetID range from 201 ~ 205(REF)
+        // convert from ASCII to actual value
+        String temp = new String(data, 0, data.length-1, StandardCharsets.UTF_8);
+        int impedNum = Integer.parseInt(temp) / 2;
+        Log.i(TAG, Integer.toString(impedNum));
+
+        Map<Integer, Integer> map = new HashMap();
+        map.put(packetID-201, impedNum);
+
+        Gson gson = new Gson(); // Need to put Gson jar file in Unity 'Assests/Plugins/Android'
+        String strData = gson.toJson(map);
+
+        // UnitySendMessage parameter only accept string or a number
+        UnitySendMessage("GanglionController", "ReceiveImpedance", strData);
     }
 
     private static void parseRaw(int packetID, byte[] payload){
@@ -256,7 +276,7 @@ public class BluetoothLeService extends Service {
 
         for(int i = 0; i < 2;i++){
             for(int j = 0; j < 4;j++) {
-                Log.i(TAG, "data" + i + " " + j + " " + Double.valueOf(scale_fac_uVolts_per_count * fullData[i][j]));
+                // Log.i(TAG, "data" + i + " " + j + " " + Double.valueOf(scale_fac_uVolts_per_count * fullData[i][j]));
                 scaleStore[i][j] = scale_fac_uVolts_per_count * fullData[i][j];
             }
         }
@@ -278,7 +298,7 @@ public class BluetoothLeService extends Service {
         String strData = gson.toJson(map);
 
         // UnitySendMessage parameter only accept string or a number
-        UnitySendMessage("GanglionController", "receiveData", strData);
+        UnitySendMessage("GanglionController", "ReceiveData", strData);
     }
 
     private static void updatePacketsCount(int packetID){
