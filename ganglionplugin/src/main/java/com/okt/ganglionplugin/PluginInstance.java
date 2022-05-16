@@ -124,9 +124,7 @@ public class PluginInstance {
                         String deviceName = bluetoothDevice.getName();
                         mIsDeviceGanglion = bluetoothDevice.getName().toUpperCase().contains("GANGLION");
 
-                        // TODO, temporary fixed name
-                        //  should connect BT device names begin "Ganglion" with regex
-                        if (deviceName.equals("Ganglion-bc8a")) {
+                        if (deviceName.contains("Ganglion")) {
                             Log.i(TAG, "Found Ganglion device: " + bluetoothDevice.getName() + bluetoothDevice.getAddress());
                             scanner.stopScan(scanCallback);
                             mScanning = false;
