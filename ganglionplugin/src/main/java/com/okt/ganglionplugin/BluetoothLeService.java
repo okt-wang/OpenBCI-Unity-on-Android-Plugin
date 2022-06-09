@@ -226,7 +226,7 @@ public class BluetoothLeService extends Service {
         String strData = gson.toJson(map);
 
         // UnitySendMessage parameter only accept string or a number
-        UnitySendMessage("GanglionController", "ReceiveImpedance", strData);
+        UnitySendMessage("GanglionManager", "ReceiveImpedance", strData);
     }
 
     private static void parseRaw(int packetID, byte[] payload){
@@ -298,7 +298,7 @@ public class BluetoothLeService extends Service {
         String strData = gson.toJson(map);
 
         // UnitySendMessage parameter only accept string or a number
-        UnitySendMessage("GanglionController", "ReceiveData", strData);
+        UnitySendMessage("GanglionManager", "ReceiveData", strData);
     }
 
     private static void updatePacketsCount(int packetID){

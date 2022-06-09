@@ -68,20 +68,40 @@ public class PluginInstance {
     public final void StreamImpedance()
     {
         // send
-        char cmd = (char) mImpedanceCommands[mImpedanceCommandIdx];
+        //char cmd = (char) mImpedanceCommands[mImpedanceCommandIdx];
+        char cmd = (char) 'z';
         Log.i(TAG, "Sending Command : " + cmd);
         mGanglionSend.setValue(new byte[]{(byte) cmd});
         mBluetoothLeService.writeCharacteristic((mGanglionSend));
-        mImpedanceCommandIdx = (mImpedanceCommandIdx + 1) % mImpedanceCommands.length; //update for next run to toggle off
+        // mImpedanceCommandIdx = (mImpedanceCommandIdx + 1) % mImpedanceCommands.length; //update for next run to toggle off
+    }
+    public final void StopStreamImpedance()
+    {
+        // send
+        //char cmd = (char) mImpedanceCommands[mImpedanceCommandIdx];
+        char cmd = (char) 'Z';
+        Log.i(TAG, "Sending Command : " + cmd);
+        mGanglionSend.setValue(new byte[]{(byte) cmd});
+        mBluetoothLeService.writeCharacteristic((mGanglionSend));
+        // mImpedanceCommandIdx = (mImpedanceCommandIdx + 1) % mImpedanceCommands.length; //update for next run to toggle off
     }
     public final void StreamData() // call by Unity, start get data from ganglion
     {
         // send
-        char cmd = (char) mCommands[mCommandIdx];
+        char cmd = (char) 'b';
         Log.i(TAG, "Sending Command : " + cmd);
         mGanglionSend.setValue(new byte[]{(byte) cmd});
         mBluetoothLeService.writeCharacteristic((mGanglionSend));
-        mCommandIdx = (mCommandIdx + 1) % mCommands.length; //update for next run to toggle off
+        // mCommandIdx = (mCommandIdx + 1) % mCommands.length; //update for next run to toggle off
+    }
+    public final void StopStreamData() // call by Unity, start get data from ganglion
+    {
+        // send
+        char cmd = (char) 's';
+        Log.i(TAG, "Sending Command : " + cmd);
+        mGanglionSend.setValue(new byte[]{(byte) cmd});
+        mBluetoothLeService.writeCharacteristic((mGanglionSend));
+        // mCommandIdx = (mCommandIdx + 1) % mCommands.length; //update for next run to toggle off
     }
 
     public final void Init()

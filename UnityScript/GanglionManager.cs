@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 
-public class GanglionController : MonoBehaviour
+public class GanglionManager : MonoBehaviour
 {
     private AndroidJavaClass unityClass;
     private AndroidJavaObject unityActivity;
