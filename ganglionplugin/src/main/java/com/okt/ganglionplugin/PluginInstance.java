@@ -103,6 +103,10 @@ public class PluginInstance {
         mBluetoothLeService.writeCharacteristic((mGanglionSend));
         // mCommandIdx = (mCommandIdx + 1) % mCommands.length; //update for next run to toggle off
     }
+    public final void Disconnect() // call by Unity
+    {
+        mBluetoothLeService.disconnect();
+    }
 
     public final void Init()
     {
